@@ -37,13 +37,13 @@ if uploaded_file:
 
             docs = vector_store.similarity_search(
                 question,
-                k=1
+                k=2
             )
 
         st.subheader("Answer")
 
         # Get retrieved chunk
-        answer = docs[0].page_content
+        answer = " ".join([doc.page_content for doc in docs])
 
         # Clean extra spaces/newlines
         answer = re.sub(r"\s+", " ", answer)
