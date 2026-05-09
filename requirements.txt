@@ -1,9 +1,10 @@
 streamlit
-langchain
-chromadb
-sentence-transformers
 pypdf
-google-generativeai
+langchain
+langchain-text-splitters
 langchain-community
-langchain-google-genai
-python-dotenv
+sentence-transformers
+chromadb
+scikit-learn
+numpy
+anthropic

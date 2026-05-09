@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.pdf_loader import load_pdf
-from utils.rag_pipeline import split_text, extract_best_sentences
+from utils.rag_pipeline import split_text, generate_answer
 from utils.embeddings import create_vector_store, get_embedding_model
 
 st.set_page_config(page_title="AI Study Assistant")
@@ -20,12 +20,9 @@ if uploaded_file:
     question = st.text_input("Ask a Question")
 
     if question:
-        with st.spinner("Searching Notes..."):
-            # Retrieve top 5 relevant chunks
-            docs = vector_store.similarity_search(question, k=5)
-
-            # Extract best sentences — top_n=8 to capture full lists
-            answer = extract_best_sentences(question, docs, embedding_model, top_n=8)
+        with st.spinner("Generating Answer..."):
+            docs = vector_store.similarity_search(question, k=3)
+            answer = generate_answer(question, docs)
 
         st.subheader("Answer")
         st.write(answer)
