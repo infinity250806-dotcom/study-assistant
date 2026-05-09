@@ -29,12 +29,12 @@ if uploaded_file:
 
     if question:
 
-    with st.spinner("Searching Notes..."):
+        with st.spinner("Searching Notes..."):
 
-        docs = vector_store.similarity_search(
-            question,
-            k=1
-        )
+            docs = vector_store.similarity_search(
+                question,
+                k=1
+                )
 
     st.subheader("Answer")
 
