@@ -33,13 +33,15 @@ if uploaded_file:
         with st.spinner("Searching Notes..."):
 
             docs = vector_store.similarity_search(
-                question,
-                k=1
+               question,
+                k=3
             )
 
         st.subheader("Answer")
 
-        clean_answer = docs[0].page_content
+        clean_answer = " ".join(
+            [doc.page_content for doc in docs]
+        )
 
         clean_answer = re.sub(r"\s+", " ", clean_answer)
 
