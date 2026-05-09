@@ -37,7 +37,7 @@ if uploaded_file:
 
             docs = vector_store.similarity_search(
                 question,
-                k=2
+                k=1
             )
 
         st.subheader("Answer")
