@@ -1,6 +1,3 @@
-import os
-import shutil
-
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 
@@ -10,14 +7,9 @@ def create_vector_store(chunks):
         model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
 
-    # Remove old vector database
-    if os.path.exists("chroma_db"):
-        shutil.rmtree("chroma_db")
-
     vector_store = Chroma.from_texts(
         texts=chunks,
-        embedding=embedding_model,
-        persist_directory="chroma_db"
+        embedding=embedding_model
     )
 
     return vector_store
