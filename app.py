@@ -1,4 +1,5 @@
 import streamlit as st
+import re
 
 from utils.pdf_loader import load_pdf
 from utils.rag_pipeline import split_text
@@ -34,14 +35,12 @@ if uploaded_file:
             docs = vector_store.similarity_search(
                 question,
                 k=1
-                )
+            )
 
-    st.subheader("Answer")
+        st.subheader("Answer")
 
-    import re
+        clean_answer = docs[0].page_content
 
-    clean_answer = docs[0].page_content
+        clean_answer = re.sub(r"\s+", " ", clean_answer)
 
-    clean_answer = re.sub(r"\s+", " ", clean_answer)
-
-    st.write(clean_answer)
+        st.write(clean_answer)
