@@ -1,6 +1,5 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-import anthropic
-
+from groq import groq
 
 def split_text(text):
     splitter = RecursiveCharacterTextSplitter(
@@ -8,25 +7,18 @@ def split_text(text):
         chunk_overlap=50,
         separators=["\n\n", "\n", ". ", " ", ""]
     )
-
     chunks = splitter.split_text(text)
     chunks = [chunk.strip() for chunk in chunks if chunk.strip()]
-    unique_chunks = list(dict.fromkeys(chunks))
-
-    return unique_chunks
+    return list(dict.fromkeys(chunks))
 
 
 def generate_answer(question: str, docs: list) -> str:
-    """Pass retrieved chunks + question to Claude to generate a proper answer."""
-
-    # Build context from retrieved chunks
     context = "\n\n".join([doc.page_content for doc in docs])
 
-    client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
+    client = Groq()  # reads GROQ_API_KEY from env
 
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1024,
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",  # free & powerful
         messages=[
             {
                 "role": "user",
@@ -41,4 +33,4 @@ def generate_answer(question: str, docs: list) -> str:
         ]
     )
 
-    return message.content[0].text
+    return response.choices[0].message.content
