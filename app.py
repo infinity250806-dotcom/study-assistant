@@ -18,10 +18,13 @@ if uploaded_file:
 
     with st.spinner("Processing PDF..."):
 
+        # Extract text from PDF
         text = load_pdf(uploaded_file)
 
+        # Split into chunks
         chunks = split_text(text)
 
+        # Create vector database
         vector_store = create_vector_store(chunks)
 
     st.success("PDF Processed Successfully")
@@ -33,16 +36,38 @@ if uploaded_file:
         with st.spinner("Searching Notes..."):
 
             docs = vector_store.similarity_search(
-               question,
-                k=3
+                question,
+                k=1
             )
 
         st.subheader("Answer")
 
-        clean_answer = " ".join(
-            [doc.page_content for doc in docs]
-        )
+        # Get retrieved chunk
+        answer = docs[0].page_content
 
-        clean_answer = re.sub(r"\s+", " ", clean_answer)
+        # Clean extra spaces/newlines
+        answer = re.sub(r"\s+", " ", answer)
 
-        st.write(clean_answer)
+        # Split into sentences
+        sentences = answer.split(". ")
+
+        # Remove duplicate sentences
+        unique_sentences = []
+        seen = set()
+
+        for sentence in sentences:
+
+            clean_sentence = sentence.strip()
+
+            if clean_sentence and clean_sentence not in seen:
+                unique_sentences.append(clean_sentence)
+                seen.add(clean_sentence)
+
+        # Join cleaned sentences
+        final_answer = ". ".join(unique_sentences)
+
+        # Add final period
+        if not final_answer.endswith("."):
+            final_answer += "."
+
+        st.write(final_answer)
