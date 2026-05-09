@@ -1,5 +1,5 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from groq import groq
+from groq import Groq
 
 def split_text(text):
     splitter = RecursiveCharacterTextSplitter(
