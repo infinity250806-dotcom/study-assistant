@@ -4,7 +4,7 @@ langchain
 langchain-text-splitters
 langchain-community
 sentence-transformers
-chromadb
+faiss-cpu
 scikit-learn
 numpy
 groq
