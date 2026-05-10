@@ -7,4 +7,4 @@ sentence-transformers
 chromadb
 scikit-learn
 numpy
-anthropic
+anthropicgroq
